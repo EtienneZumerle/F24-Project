@@ -1,2 +1,2 @@
 # F24-Project
-test
+A macro keypad with rotary encoders
