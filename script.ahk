@@ -58,64 +58,58 @@ F24 & F23::
 return
 ;click
 F24 & F20::
-    MsgBox 2
+   
 return
 
 ;encoder 1
 ;click
 F20::
-    MsgBox 1
+    
 return
 
 ;SW (1;1)
-F19::Media_Prev
+F19::
+Send {Media_Prev}
 ;MsgBox SW (1 1)
 return
 
-;SW (1;2)
-F24 & F19::Media_Play_Pause
-    ;MsgBox SW (1 2)
-return
-
-;SW (1;3)
-F23 & F19::Media_Next
-    ;MsgBox SW (1 3)
-return
-
-;SW (1;4)
-F22 & F19::
-    MsgBox SW (1 4)
-return
-
 ;SW (2;1)
+F24 & F19::
+Send {Media_Play_Pause}
+    ;MsgBox SW (2 1)
+return
+
+;SW (3;1)
+F23 & F19::
+Send {Media_Next}
+    ;MsgBox SW (3 1)
+return
+
+;SW (4;1)
+F22 & F19::
+WinGet, active_id, PID, A
+run, taskkill /PID %active_id% /F,,Hide
+return
+
+;SW (1;2)
 F21 & F19::
-    MsgBox SW (2 1)
+    Run "uplay://launch/5595/0"
 return
 
 ;SW (2;2)
 F20 & F19::
-    MsgBox SW (2 2)
+ 
 return
 
-;SW (2;3)
+;SW (3;2)
 F18::
-    MsgBox SW (2 3)
+    
 return
 
-;SW (2;4)
+;SW (4;2)
 F24 & F18::
-    MsgBox SW (2 4)
+
 return
-
-;Ctrl & Numpad 4: Previous Track
-^Numpad4::Media_Prev
-
-;Ctrl & Numpad 6: Next Track
-
-^Numpad6::Media_Next
-
-;Ctrl & Numpad 5: Play/Pause Track
-^Numpad5::Media_Play_Pause
 
 ;open volume mixer
 #v::

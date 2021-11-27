@@ -373,40 +373,54 @@ void kbd_cmd(int address)
 
   case 16:
     Keyboard.press(KEY_F19); //SW 1;1
+    delay(10);
     break;
 
   case 17:
     Keyboard.press(KEY_F24); //SW 2;1
+    delay(10);
     Keyboard.press(KEY_F19);
+    delay(10);
     break;
 
   case 18:
     Keyboard.press(KEY_F23); //SW 3;1
+    delay(10);
     Keyboard.press(KEY_F19);
+    delay(10);
     break;
 
   case 19:
     Keyboard.press(KEY_F22); //SW 4;1
+    delay(10);
     Keyboard.press(KEY_F19);
+    delay(10);
     break;
 
   case 20:
     Keyboard.press(KEY_F21); //SW 1;2
+    delay(10);
     Keyboard.press(KEY_F19);
+    delay(10);
     break;
 
   case 21:
     Keyboard.press(KEY_F20); //SW 2;2
+    delay(10);
     Keyboard.press(KEY_F19);
+    delay(10);
     break;
 
   case 22:
     Keyboard.press(KEY_F18); //SW 3;2
+    delay(10);
     break;
 
   case 23:
     Keyboard.press(KEY_F24); //SW 4;2
+    delay(10);
     Keyboard.press(KEY_F18);
+    delay(10);
     break;
   }
 
