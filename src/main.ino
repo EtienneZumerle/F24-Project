@@ -302,6 +302,7 @@ void kbd_cmd(int address)
   switch (address)
   {
   case 1:
+  Serial.println("oui");
     Keyboard.press(KEY_F24); //encoder 1 ++
     break;
 
