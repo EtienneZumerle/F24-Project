@@ -9,7 +9,7 @@
 5. [Electronics](#electronics)
     + [Design](#design)
     + [Routing](#routing)
-    + [Soldering](#soldering)
+    + [Soldering/Assembly](#soldering)
 6. [Software](#software)
     + [Arduino Code](#code)
     + [Auto Hotkey script](#ahk)
@@ -38,7 +38,7 @@ That meant I had to open the windows sound mixer every time to manage sound volu
 + It uses an Arduino "Pro Micro" (ATmega32U4) to send keystrokes through USB</br> 
 It turns out that keys `F13` to `F24` are still suported by Windows (they were used on some very old keyboards), it's a easy and simple way to send keystrokes while never interfering with other applications. </br></br>
 
-+ The recieved keystrokes are assigned to actions like Spotify volume up, next track, launch a specific app... but it could be anything thanks to the power of [Autohotkey](https://www.autohotkey.com/) </br> 
++ The recieved keystrokes are assigned to actions like Spotify volume up, next track, launch a specific app... But it could be anything thanks to the power of [Autohotkey](https://www.autohotkey.com/) </br> 
 
 <div id="3D">
 
@@ -50,7 +50,7 @@ It turns out that keys `F13` to `F24` are still suported by Windows (they were u
 
 ![assembly](figures/assembly.png)
 
-
+Before printing the case in whole try printing the "test-fit" pieces provided because every printer is different and you might have to modify inserts holes size slightly: ``
 + **the bottom piece**</br></br>
     - I recommend using super glue to place the M3 nuts. **Don't use a soldering iron** because it will uncenter the nut and you won't be able to bolt the bottom to the top.</br>
     - Use 12mm long M3 Bolts for every hole.</br>
@@ -58,18 +58,29 @@ It turns out that keys `F13` to `F24` are still suported by Windows (they were u
 
 ![bottom](figures/case-bottom.png)
 
-[\<mark>](https://github.com/markdown-it/markdown-it-mark)
-
-==Marked text==
 
 + **the top piece**</br></br>
-    - Use the same M3 nuts 
+  <span style="background-color: #FFEB89">This part can be improved, read "[Things that can be improved](#improve)" </span>
+    - Use the same M3 nuts
+    - Use ironing setting in your slicer to make the top part smooth
 
 ![top](figures/case-top.png)
 
 <div id="keycaps">
 
 ### Keycaps
+
+You can either print keycaps upright or upside down. There are pros and cons 
+to both options.</br>
+For best result, use an SLA 3D printer.<br/>
+You can also buy injection molded keycaps.
+ 
+
+| printed upright   | printed upside down |
+| :---------------: | :-----------------: |
+|![bottom](figures/3D-printed-keycap-upright-top.png)|![top](figures/3D-printed-keycap-upright-bottom.png)|
+|![bottom](figures/3D-printed-keycap-upside-down-top.png)|![top](figures/3D-printed-keycap-upside-down-bottom.png)|
+|When printing this way, the key is harder to mount on the switch but doesn't come off so easily, it also has a very smooth and flat top with ironing setting is enabled.|When printing this way, the key is easier to mount on the switch but comes off too easily , it has a textured top whose quality depends on the first layer and bed texture |
 
 <div id="electronics">
 
@@ -85,8 +96,9 @@ It turns out that keys `F13` to `F24` are still suported by Windows (they were u
 
 <div id="soldering">
 
-### Soldering
+### Soldering/Assembly
 
+The soldering process is very straight forward, the only parts you have to solder carefully are the switches, they need to be properly aligned and spaced out by using the 3D printed grid. Also make sure the switches are very flat against the PCB. <span style="background-color: #FFEB89">You have to solder them first<span style="background-color: #FFFFFF"> otherwise you won't be able to use the grid. ![grid](figures/grid.png)
 <div id="software">
 
 ## Software
@@ -95,31 +107,68 @@ It turns out that keys `F13` to `F24` are still suported by Windows (they were u
 
 ### Arduino Code
 
-[*Keys are assigned like this*](#code)
-- Encoders
++ libraries
 
-| encoder | output (clockwise)   | output (clockwise)  |    output (pushed)   |
-|--------:| :-------------------:| :------------------:|:--------------------:|
-| 1       | `KEY_F24`            | `KEY_F23`           | `KEY_F20`            |
-| 2       | `KEY_F24 && KEY_F23` | `KEY_F22`           | `KEY_F24 && KEY_F20` |
-| 3       | `KEY_F24 && KEY_F22` | `KEY_F23 && KEY_F22`| `KEY_F23 && KEY_F20` |
-| 4       | `KEY_F21`            | `KEY_F24 && KEY_F21`| `KEY_F22 && KEY_F20` |
-| 5       | `KEY_F23 && KEY_F21` | `KEY_F22 && KEY_F21`| `KEY_F21 && KEY_F20` |
+    Uses the `Keyboard.h` which uses the `HID.h` library to send keystrokes over USB.
+
++ functions:
+    
+    - ```cpp
+        bool read_mux(int address);
+        ```
+        Returns the multiplexer output for a given address.</br></br> 
+    - ```cpp
+        int read_PB_encoder(int num_encoder);
+        ```
+        Returns `true` if the encoder is pushed.</br>
+        Returns `false` if it's not.</br></br>
+    - ```cpp
+        int read_encoder(int num_encoder);
+        ```
+        Returns `2` if the encoder is rotated one step counter clockwise.</br>
+        Returns `1` if the encoder is rotated one step clockwise.</br>
+        Returns `0` if the encoder is not rotated.</br></br>
+    - ```cpp
+        bool read_kbd(int x, int y);
+        ```
+        Returns `true` if the selected key is pushed.</br>
+        Returns `false` if it's not.</br></br>   
+    - ```cpp
+        void kbd_cmd(int address);
+        ```
+        sends the right `KEY_FXX` combination</br>
+        (*Keys and encoders are assigned like follows*)
+        - Encoders
+
+            | encoder | output (clockwise)   | output           (clockwise)  |    output (pushed)   |
+            |--------:| :-------------------:|          :------------------:|:--------------------:|
+            | 1       | `KEY_F24`            |          `KEY_F23`           | `KEY_F20`            |
+            | 2       | `KEY_F24 && KEY_F23` |          `KEY_F22`           | `KEY_F24 && KEY_F20` |
+            | 3       | `KEY_F24 && KEY_F22` | `KEY_F23 &&          KEY_F22`| `KEY_F23 && KEY_F20` |
+            | 4       | `KEY_F21`            | `KEY_F24 &&          KEY_F21`| `KEY_F22 && KEY_F20` |
+            | 5       | `KEY_F23 && KEY_F21` | `KEY_F22 &&          KEY_F21`| `KEY_F21 && KEY_F20` |
 
 
 
-- Keys
+        - Keys
 
-| row/column | col 1                | col 2               |col 3                |col 4                | 
-| ----------:| :-------------------:| :------------------:|:-------------------:|:-------------------:|
-| row 1      | `KEY_F19`            | `KEY_F24 && KEY_F19`| `KEY_F23 && KEY_F19`| `KEY_F22 && KEY_F19`|
-| row 2      | `KEY_F21 && KEY_F19` | `KEY_F20 && KEY_F19`| `KEY_F18`           | `KEY_F24 && KEY_F18`|
+            | row/column | col 1                | col           2               |col 3                |col          4                | 
+            | ----------:| :-------------------:|           :------------------:|:-------------------:|         :-------------------:|
+            | row 1      | `KEY_F19`            | `KEY_F24 &&           KEY_F19`| `KEY_F23 && KEY_F19`| `KEY_F22 &&         KEY_F19`|
+            | row 2      | `KEY_F21 && KEY_F19` | `KEY_F20 &&           KEY_F19`| `KEY_F18`           | `KEY_F24 &&         KEY_F18`|
+     
+    - ```cpp
+        void loop();
+        ```
+        Reads everything one by one by using the functions described before.
 
 
 <div id="ahk">
 
 ### Auto Hotkey Script
 
+**To use the script**, you need to make it so the script runs when windows starts. To do so : Make sure [AutoHotkey](https://www.autohotkey.com/) is installed press **Win+R** then run: `shell:startup` then place the `script.exe` in the startup folder.
+
 <div id="improve">
 
-## Things that can be inproved
+## Things that can be improved

@@ -2,7 +2,7 @@
 
 #include <Keyboard.h>
 
-bool read_mux(int addresse);
+bool read_mux(int address);
 int read_encoder(int num_encoder);
 int read_PB_encoder(int num_encoder);
 bool read_kbd(int x, int y);
@@ -146,12 +146,12 @@ void loop()
   //Serial.println(read_kbd(4,1));
 }
 
-bool read_mux(int addresse)
+bool read_mux(int address)
 {
-  int A = bitRead(addresse, 0);
-  int B = bitRead(addresse, 1);
-  int C = bitRead(addresse, 2);
-  int D = bitRead(addresse, 3);
+  int A = bitRead(address, 0);
+  int B = bitRead(address, 1);
+  int C = bitRead(address, 2);
+  int D = bitRead(address, 3);
 
   digitalWrite(A0, A);
   digitalWrite(A1, B);
