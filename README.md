@@ -50,7 +50,7 @@ It turns out that keys `F13` to `F24` are still suported by Windows (they were u
 
 ![assembly](figures/assembly.png)
 
-Before printing the case in whole try printing the "test-fit" pieces provided because every printer is different and you might have to modify inserts holes size slightly: ``
+Before printing the case in whole try printing the "test-fit" pieces provided because every printer is different and you might have to modify inserts holes size slightly.
 + **the bottom piece**</br></br>
     - I recommend using super glue to place the M3 nuts. **Don't use a soldering iron** because it will uncenter the nut and you won't be able to bolt the bottom to the top.</br>
     - Use 12mm long M3 Bolts for every hole.</br>
@@ -80,7 +80,7 @@ You can also buy injection molded keycaps.
 | :---------------: | :-----------------: |
 |![bottom](figures/3D-printed-keycap-upright-top.png)|![top](figures/3D-printed-keycap-upright-bottom.png)|
 |![bottom](figures/3D-printed-keycap-upside-down-top.png)|![top](figures/3D-printed-keycap-upside-down-bottom.png)|
-|When printing this way, the key is harder to mount on the switch but doesn't come off so easily, it also has a very smooth and flat top with ironing setting is enabled.|When printing this way, the key is easier to mount on the switch but comes off too easily , it has a textured top whose quality depends on the first layer and bed texture |
+|When printing this way, the key is harder to mount on the switch but doesn't come off so easily, it also has a very smooth and flat top with ironing setting is enabled.|When printing this way, the key is easier to mount on the switch but comes off too easily , it has a textured top whose quality depends on the first layer and bed texture. |
 
 <div id="electronics">
 
@@ -98,7 +98,7 @@ You can also buy injection molded keycaps.
 
 ### Soldering/Assembly
 
-The soldering process is very straight forward, the only parts you have to solder carefully are the switches, they need to be properly aligned and spaced out by using the 3D printed grid. Also make sure the switches are very flat against the PCB. <span style="background-color: #FFEB89">You have to solder them first<span style="background-color: #FFFFFF"> otherwise you won't be able to use the grid. ![grid](figures/grid.png)
+The soldering process is very straight forward, the only parts you have to solder carefully are the switches, they need to be properly aligned and spaced out by using the 3D printed grid. Also **make sure the switches are very flat against the PCB**. **You have to solder them first** otherwise you won't be able to use the grid.</br> ![grid](figures/grid.png) 
 <div id="software">
 
 ## Software
@@ -167,7 +167,34 @@ The soldering process is very straight forward, the only parts you have to solde
 
 ### Auto Hotkey Script
 
-**To use the script**, you need to make it so the script runs when windows starts. To do so : Make sure [AutoHotkey](https://www.autohotkey.com/) is installed press **Win+R** then run: `shell:startup` then place the `script.exe` in the startup folder.
+The shortcut that are executed are placed between `FXX & FXX::` and `return`
+
++   Some examples are :
+    -   ```ahk
+        Send {Media_Prev}
+        ```
+    -   ```ahk
+        Send {Media_Play_Pause}
+        ```
+    -   ```ahk
+        Send {Media_Next}
+        ```
+        Plays previous track, play/pauses or plays next track (windows feature)</br></br>
+    - ```ahk
+        appVolume("Brave.exe", -5);
+        ```
+        Changes the sound level of `Brave.exe` by 5% increments. ***Note that you will need to use one function per app***, otherwise theses functions are going to interfere with each others. ex:`appVolume2("Discord.exe", -5);
+        `,`appVolume3("Spotify.exe", -5);`etc...</br></br>
+    - ```ahk
+        WinGet, ActivePID, PID, A 
+        SetAppVolume(ActivePID, GetAppVolume(ActivePID) - 5);
+        ```
+        Changes the sound level of the focused app by 5% increments </br>
+        unfortunatelly ***this command doesn't work with every app***, (ex: Discord, Chrome).
+        </br></br>
+    - You can create your own sortcuts , read [AutoHotkey documentation](https://www.autohotkey.com/docs/AutoHotkey.htm)   
+
+**To use the script**, you need to make it so the script runs when windows starts. To do so : Make sure [AutoHotkey](https://www.autohotkey.com/) is installed. Press **Win+R** then run: `shell:startup` then place the `script.ahk` in the startup folder.
 
 <div id="improve">
 

@@ -42,7 +42,7 @@ F24 & F22::
 return
 ;click
 F23 & F20::
-    appVolume2("Spotify.exe", -100)
+    appVolume3("Discord.exe", -100)
 return
 
 ;encoder 2
@@ -98,7 +98,12 @@ return
 
 ;SW (2;2)
 F20 & F19::
- 
+    Run C:\Windows\System32\SndVol.exe  ;open volume mixer
+    WinWait, ahk_exe SndVol.exe
+    If WinExist("ahk_exe SndVol.exe") 
+        WinActivate, ahk_exe SndVol.exe
+    WinMove, ahk_exe SndVol.exe,, 2080, 1060 
+
 return
 
 ;SW (3;2)
@@ -111,14 +116,6 @@ F24 & F18::
 
 return
 
-;open volume mixer
-#v::
-    Run C:\Windows\System32\SndVol.exe
-    WinWait, ahk_exe SndVol.exe
-    If WinExist("ahk_exe SndVol.exe") 
-        WinActivate, ahk_exe SndVol.exe
-    WinMove, ahk_exe SndVol.exe,, 2080, 1060 
-Return
 
 appVolume(app, volume)
 {
